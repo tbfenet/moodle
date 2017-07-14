@@ -1,0 +1,3 @@
+[submodule "question/format/speedwell_csv"]
+	path = question/format/speedwell_csv
+	url = git@github.com:tbfenet/qformat_speedwell_csv.git
