@@ -1,0 +1,34 @@
+CBM mods for Moodle 3.2 with Moodle Grade corresponding to Accuracy+Bonus (max 100%) rather average CBM mark (points) per question (max 300%).
+20/1/2017
+
+Includes CBM Grades report plugin v. 2.7plus
+    http://moodle.org/plugins/view.php?plugin=quiz_cbmgrades
+THIS VERSION ('plus') calculates Moodle grades when using CBM as based on
+   CB Accuracy x Grade value for the quiz (max 100%)
+   instead of based on the the CBM total mark (max 3, or 300%)
+
+[mod\quiz\review.php] 
+    Previously, attempt reviews for an attempt that had used CBM would display the Grade (up to 300%) even
+        if the Quiz was no longer set to use CBM
+    Change it so it always shows the Grade based simply on Accuracy in a review, if the Quiz currently has CBM off.
+    Inform the viewer when CBM has been switched either on or off since the attempt.
+    Include the supplementary CB feedback info when CBM was used for the attempt, even if not currently in use.
+    Don't try to show (non-existent) CBM info if the attempt was made without CBM, even if it is currently switched on for the Quiz. 
+    Add code to scale the CB grade in CBM 'additional_summary_data' using quiz->grade for display, 
+        since this cannot (easily) be done in behaviourtype.php
+    Includes typo correction (usrepicture) corrected in core versons of Moodle 2.9.5, 3.0.3
+[question\behaviour\deferredcbm\behaviourtype.php]
+   Return extra data with the function summarise_usage, to support the above.
+   Add rows in 'additional_summary_data' shown with CBM to show:
+        Total Marks, CB Grade (based on CB Accuracy) and (if not all Qs were answered) Number of Responses
+[question\behaviour\deferredcbm\lang\en\qbehaviour_deferredcbm.php]
+    Add & improve display wording  
+
+For the 'plus' version additional changes are included to show Moodle Grades based on CB Accuracy:
+[question\engine\questionusage.php] Calculate attempt->sumgrades based on CB Accuracy (when CBM behaviour is in use)
+    (=Accuracy + Bonus) rather than the total of marks for each Q.
+[question\behaviour\deferredcbm\behaviourtype.php]
+    In supplementary info for attempt reviews, show Moodle Grades as based on CB Accuracy rather than CBM average mark
+[question\behaviour\deferredcbm\lang\en\qbehaviour_deferredcbm.php]
+    New string 'cbmgradewithbonus'
+Incorporate CBM Grades plugin 'VERSIONplus' with corresponding changes
