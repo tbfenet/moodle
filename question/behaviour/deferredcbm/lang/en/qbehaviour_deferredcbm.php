@@ -87,6 +87,7 @@ $string['maxrange'] = '{$a} (range: 3 to -6)';
 $string['noquestions'] = 'No responses';
 $string['overconfident'] = 'over-confident';
 $string['pluginname'] = 'Deferred feedback with CBM';
+$string['privacy:metadata'] = 'The Deferred feedback with CBM question behaviour plugin does not store any personal data.';
 $string['slightlyoverconfident'] = 'a bit over-confident';
 $string['slightlyunderconfident'] = 'a bit under-confident';
 $string['totalmarks'] = 'CBM Total';
