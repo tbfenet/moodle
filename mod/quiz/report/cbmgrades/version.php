@@ -17,6 +17,8 @@
 /**
  * Quiz cbmgrades report version information.
  * Derived by Tony Gardner-Medwin from the responses plugin
+ * Version for grades based on CB Accuracy (Acc + Bonus), not CB Average 
+ * Adapted 18//5/2018 for GDPR requirements, thanks to J-M Vedrine for help
  * @package   quiz_cbmgrades
  * @copyright 2013, 2014 Tony Gardner-Medwin
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -24,7 +26,6 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2014091200;
-$plugin->release = '2.7plus';
+$plugin->version = 2018051800;
 $plugin->requires = 2014051200;
 $plugin->component = 'quiz_cbmgrades';

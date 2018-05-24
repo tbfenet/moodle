@@ -30,7 +30,7 @@ $string['cbmexplanations'] = 'CBM Explanations: ';
 $string['cbmgrade'] = 'CB Grade';
 $string['cbmgrades'] = 'CBM Grades';
 $string['cbmgrades_help'] = 'The Moodle \'Grade\' when using CBM is based on the CB Accuracy (= Accuracy + Bonus) for the whole quiz,
-        multiplied by the overall grade value assigned to the quiz. 
+        multiplied by the overall grade value assigned to the quiz.
 
 **Accuracy** is the percentage correct, ignoring certainty but weighted with the max values assigned to each question.
         If the student successfully distinguishes more and less reliable answers, this is reflected in a **CB Bonus**,
@@ -48,6 +48,10 @@ $string['grade'] = 'Moodle Grade';
 $string['marks'] = 'Mark Total';
 $string['pagesize'] = 'Page size';
 $string['pluginname'] = 'CBM Summary';
+$string['privacy:preference:qtext'] = 'Whether to show the question text columns.';
+$string['privacy:preference:resp'] = 'Whether to show the students\' response columns.';
+$string['privacy:preference:qdata'] = 'Whether to show data for each Q.';
+$string['privacy:preference:chosenrs'] = 'Whether to show scores based on chosen questions rather than the whole quiz.';
 $string['qdata'] = 'Show data for each Q';
 $string['qx'] = 'Q{$a}';
 $string['responses'] = 'Responses';
