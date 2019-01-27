@@ -2740,7 +2740,7 @@ function glossary_get_paging_bar($totalcount, $page, $perpage, $baseurl, $maxpag
         if ($showspecial) {
             $code .= '<br />';
             if ($specialselected) {
-                $code .= "<b>$specialtext</b>";
+                $code .= "$separator<b>$specialtext</b>";
             } else {
                 $code .= "$separator<a href=\"{$baseurl}page=$specialvalue\">$specialtext</a>";
             }
@@ -3073,7 +3073,8 @@ function glossary_reset_userdata($data) {
  * @return array
  */
 function glossary_get_extra_capabilities() {
-    return array('moodle/site:accessallgroups', 'moodle/site:viewfullnames', 'moodle/site:trustcontent', 'moodle/rating:view', 'moodle/rating:viewany', 'moodle/rating:viewall', 'moodle/rating:rate', 'moodle/comment:view', 'moodle/comment:post', 'moodle/comment:delete');
+    return ['moodle/rating:view', 'moodle/rating:viewany', 'moodle/rating:viewall', 'moodle/rating:rate',
+            'moodle/comment:view', 'moodle/comment:post', 'moodle/comment:delete'];
 }
 
 /**

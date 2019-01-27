@@ -2314,5 +2314,91 @@ function xmldb_main_upgrade($oldversion) {
         upgrade_main_savepoint(true, 2018051702.02);
     }
 
+    if ($oldversion < 2018051703.06) {
+        // Update the FB logo URL.
+        $oldurl = 'https://facebookbrand.com/wp-content/themes/fb-branding/prj-fb-branding/assets/images/fb-art.png';
+        $newurl = 'https://facebookbrand.com/wp-content/uploads/2016/05/flogo_rgb_hex-brc-site-250.png';
+
+        $updatesql = "UPDATE {oauth2_issuer}
+                         SET image = :newimage
+                       WHERE " . $DB->sql_compare_text('image', 100). " = :oldimage";
+        $params = [
+            'newimage' => $newurl,
+            'oldimage' => $oldurl
+        ];
+
+        $DB->execute($updatesql, $params);
+
+        upgrade_main_savepoint(true, 2018051703.06);
+    }
+
+    if ($oldversion < 2018051703.09) {
+        upgrade_delete_orphaned_file_records();
+        upgrade_main_savepoint(true, 2018051703.09);
+    }
+
+    if ($oldversion < 2018051704.02) {
+
+        // Delete all files that have been used in sections, which are already deleted.
+        $sql = "SELECT DISTINCT f.itemid as sectionid, f.contextid
+                  FROM {files} f
+             LEFT JOIN {course_sections} s ON f.itemid = s.id
+                 WHERE f.component = :component AND f.filearea = :filearea AND s.id IS NULL ";
+
+        $params = [
+            'component' => 'course',
+            'filearea' => 'section'
+        ];
+
+        $stalefiles = $DB->get_recordset_sql($sql, $params);
+
+        $fs = get_file_storage();
+        foreach ($stalefiles as $stalefile) {
+            $fs->delete_area_files($stalefile->contextid, 'course', 'section', $stalefile->sectionid);
+        }
+        $stalefiles->close();
+
+        upgrade_main_savepoint(true, 2018051704.02);
+    }
+
+    if ($oldversion < 2018051704.03) {
+        // Add index 'useridfrom' to the table 'notifications'.
+        $table = new xmldb_table('notifications');
+        $index = new xmldb_index('useridfrom', XMLDB_INDEX_NOTUNIQUE, ['useridfrom']);
+
+        if (!$dbman->index_exists($table, $index)) {
+            $dbman->add_index($table, $index);
+        }
+
+        upgrade_main_savepoint(true, 2018051704.03);
+    }
+
+    if ($oldversion < 2018051704.04) {
+        // Remove duplicate entries from group memberships.
+        // Find records with multiple userid/groupid combinations and find the highest ID.
+        // Later we will remove all those entries.
+        $sql = "
+            SELECT MIN(id) as minid, userid, groupid
+            FROM {groups_members}
+            GROUP BY userid, groupid
+            HAVING COUNT(id) > 1";
+        if ($duplicatedrows = $DB->get_recordset_sql($sql)) {
+            foreach ($duplicatedrows as $row) {
+                $DB->delete_records_select('groups_members',
+                    'userid = :userid AND groupid = :groupid AND id <> :minid', (array)$row);
+            }
+        }
+        $duplicatedrows->close();
+
+        // Define key useridgroupid (unique) to be added to group_members.
+        $table = new xmldb_table('groups_members');
+        $key = new xmldb_key('useridgroupid', XMLDB_KEY_UNIQUE, array('userid', 'groupid'));
+        // Launch add key useridgroupid.
+        $dbman->add_key($table, $key);
+
+        // Main savepoint reached.
+        upgrade_main_savepoint(true, 2018051704.04);
+    }
+
     return true;
 }
